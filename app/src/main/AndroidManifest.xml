@@ -3,18 +3,19 @@
 
     <application
         android:allowBackup="true"
-        android:label="Tic Tac Toe Pro"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat">
-        
-        <activity
-            android:name=".MainActivity"
+        android:label="Tic tac toe"
+        android:theme="@style/AppTheme"> <activity
+            android:name=".StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity 
+            android:name=".GameActivity"
+            android:screenOrientation="portrait" />
+
+    </application>
 </manifest>

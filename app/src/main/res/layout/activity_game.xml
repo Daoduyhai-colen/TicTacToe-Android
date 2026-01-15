@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen_gradient"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_board_frame"
+        android:backgroundTint="@color/bg_light"
+        android:elevation="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_button_gold"
+            android:backgroundTint="@color/red_neon"
+            android:src="@drawable/ic_user" />
+
+        <TextView
+            android:id="@+id/tvScore1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="0"
+            android:textColor="@color/gold_main"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="VS"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvScore2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:text="0"
+            android:textColor="@color/gold_main"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgPlayer2"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:padding="8dp"
+            android:background="@drawable/bg_button_gold"
+            android:backgroundTint="@color/blue_neon"
+            android:src="@drawable/ic_robot" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="15dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_board_frame"
+            android:elevation="15dp"
+            android:padding="5dp">
+            <com.example.appcuaban.CaroView
+                android:id="@+id/caroView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/board_bg" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="20dp">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnBack"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_button_gold"
+            android:backgroundTint="#EF5350"
+            android:text="THOÁT"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnReset"
+            android:layout_width="140dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bg_button_gold"
+            android:text="VÁN MỚI"
+            android:textColor="#3E2723"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

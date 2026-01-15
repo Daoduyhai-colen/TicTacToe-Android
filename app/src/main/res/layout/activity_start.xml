@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_screen_gradient"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:fontFamily="sans-serif-black"
+        android:shadowColor="#000000"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:shadowRadius="10"
+        android:text="Tic tac toe"
+        android:textAlignment="center"
+        android:textColor="@color/gold_main"
+        android:textSize="48sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnVsAI"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/bg_button_gold"
+        android:text="ĐẤU VỚI MÁY (AI)"
+        android:textColor="#3E2723"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnTwoPlayers"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@drawable/bg_button_gold"
+        android:backgroundTint="@color/white"
+        android:text="2 NGƯỜI CHƠI"
+        android:textColor="@color/bg_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
