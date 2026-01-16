@@ -5,12 +5,10 @@ import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import android.widget.Toast
 
 class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     private val board = Array(15) { IntArray(15) { 0 } }
     
-    // Cọ vẽ
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.ROUND
@@ -18,16 +16,15 @@ class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     }
     
     private var cellSize = 0f
+    private val boardPadding = 8f 
     private var mode = "PVP"
     private var isPlayer1Turn = true
     private var isGameOver = false
 
-    // MÀU SẮC
     private val colorGrid = Color.parseColor("#B0BEC5")
     private val colorX = Color.parseColor("#FF4444")
     private val colorO = Color.parseColor("#448AFF")
 
-    
     var onGameEndListener: ((winner: Int) -> Unit)? = null
 
     fun setMode(m: String?) {
@@ -45,25 +42,30 @@ class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (width == 0) return
-        cellSize = width.toFloat() / 15
+
+        cellSize = (width.toFloat() - boardPadding * 2) / 15
         
         paint.color = colorGrid
         paint.strokeWidth = 2f
         for (i in 0..15) {
-            canvas.drawLine(0f, i * cellSize, width.toFloat(), i * cellSize, paint)
-            canvas.drawLine(i * cellSize, 0f, i * cellSize, height.toFloat(), paint)
+            val pos = i * cellSize + boardPadding
+            canvas.drawLine(boardPadding, pos, width.toFloat() - boardPadding, pos, paint)
+            canvas.drawLine(pos, boardPadding, pos, height.toFloat() - boardPadding, paint)
         }
 
         paint.strokeWidth = 12f
         for (r in 0..14) for (c in 0..14) {
             val pad = cellSize * 0.28f
+            val left = c * cellSize + boardPadding
+            val top = r * cellSize + boardPadding
+            
             if (board[r][c] == 1) {
                 paint.color = colorX
-                canvas.drawLine(c*cellSize+pad, r*cellSize+pad, (c+1)*cellSize-pad, (r+1)*cellSize-pad, paint)
-                canvas.drawLine((c+1)*cellSize-pad, r*cellSize+pad, c*cellSize+pad, (r+1)*cellSize-pad, paint)
+                canvas.drawLine(left + pad, top + pad, left + cellSize - pad, top + cellSize - pad, paint)
+                canvas.drawLine(left + cellSize - pad, top + pad, left + pad, top + cellSize - pad, paint)
             } else if (board[r][c] == 2) {
                 paint.color = colorO
-                canvas.drawCircle(c*cellSize + cellSize/2, r*cellSize + cellSize/2, cellSize/2 - pad, paint)
+                canvas.drawCircle(left + cellSize / 2, top + cellSize / 2, cellSize / 2 - pad, paint)
             }
         }
     }
@@ -71,12 +73,11 @@ class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (isGameOver || event.action != MotionEvent.ACTION_DOWN) return true
 
-        val c = (event.x / cellSize).toInt()
-        val r = (event.y / cellSize).toInt()
+        val c = ((event.x - boardPadding) / cellSize).toInt()
+        val r = ((event.y - boardPadding) / cellSize).toInt()
 
         if (r in 0..14 && c in 0..14 && board[r][c] == 0) {
             val currentPlayer = if (mode == "PVP") (if (isPlayer1Turn) 1 else 2) else 1
-            
             board[r][c] = currentPlayer
             invalidate()
 
@@ -90,24 +91,17 @@ class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         return true
     }
 
+    
     private fun aiSmartMove() {
         if (isGameOver) return
-        var bestScore = Int.MIN_VALUE
-        var bestR = -1; var bestC = -1
-
+        var bestScore = Int.MIN_VALUE; var bestR = -1; var bestC = -1
         for (r in 0..14) for (c in 0..14) {
             if (board[r][c] == 0 && hasNeighbor(r, c)) {
                 val score = evaluate(r, c)
-                if (score > bestScore) {
-                    bestScore = score; bestR = r; bestC = c
-                }
+                if (score > bestScore) { bestScore = score; bestR = r; bestC = c }
             }
         }
-
-        if (bestR == -1) {
-            if (board[7][7] == 0) { bestR = 7; bestC = 7 } else { bestR = 6; bestC = 6 }
-        }
-
+        if (bestR == -1) { if (board[7][7] == 0) { bestR = 7; bestC = 7 } else { bestR = 6; bestC = 6 } }
         board[bestR][bestC] = 2
         invalidate()
         if (checkWin(bestR, bestC, 2)) endGame(2)
@@ -138,14 +132,12 @@ class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
             var nr = r + d.first; var nc = c + d.second
             while (nr in 0..14 && nc in 0..14 && board[nr][nc] == player) { count++; nr += d.first; nc += d.second }
             if (nr in 0..14 && nc in 0..14 && board[nr][nc] == 0) openEnds++
-
             nr = r - d.first; nc = c - d.second
             while (nr in 0..14 && nc in 0..14 && board[nr][nc] == player) { count++; nr -= d.first; nc -= d.second }
             if (nr in 0..14 && nc in 0..14 && board[nr][nc] == 0) openEnds++
-
             if (count >= 5) totalScore += 100000
             else if (count == 4) totalScore += if (openEnds == 2) 10000 else 1000
-            else if (count == 3) totalScore += if (openEnds == 2) 1000 else 100
+            else if (count == 3) totalScore += if (openEnds == 2) 1000 else 10
             else if (count == 2) totalScore += if (openEnds == 2) 100 else 10
         }
         return totalScore
@@ -164,15 +156,10 @@ class CaroView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
         return false
     }
 
-    private fun endGame(winner: Int) {
-        isGameOver = true
-        onGameEndListener?.invoke(winner)
-    }
+    private fun endGame(winner: Int) { isGameOver = true; onGameEndListener?.invoke(winner) }
 
     fun reset() {
         for (i in 0..14) for (j in 0..14) board[i][j] = 0
-        isPlayer1Turn = true
-        isGameOver = false
-        invalidate()
+        isPlayer1Turn = true; isGameOver = false; invalidate()
     }
 }

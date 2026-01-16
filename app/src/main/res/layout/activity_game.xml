@@ -65,17 +65,20 @@
     </LinearLayout>
 
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
         android:padding="15dp">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_board_frame"
             android:elevation="15dp"
-            android:padding="5dp">
+            android:padding="8dp"> 
+
             <com.example.appcuaban.CaroView
                 android:id="@+id/caroView"
                 android:layout_width="match_parent"
@@ -89,6 +92,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="20dp">
+        
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnBack"
             android:layout_width="140dp"
@@ -99,6 +103,7 @@
             android:text="THOÁT"
             android:textColor="@color/white"
             android:textStyle="bold" />
+            
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnReset"
             android:layout_width="140dp"
